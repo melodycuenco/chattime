@@ -14329,7 +14329,23 @@ Vue.component('chat-log', __webpack_require__(48));
 Vue.component('chat-composer', __webpack_require__(53));
 
 var app = new Vue({
-  el: '#app'
+    el: '#app',
+    data: {
+        messages: [{
+            message: 'Hey!',
+            user: "John Doe"
+        }, {
+            message: 'Hello!',
+            user: "Jane Doe"
+        }]
+    },
+    methods: {
+        addMessage: function addMessage(message) {
+            //Add to existing messages
+            this.messages.push(message);
+            //Persist to the database
+        }
+    }
 });
 
 /***/ }),
@@ -47689,7 +47705,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.chat-message {\r\n    padding: 1rem;\n}\n.chat-message > p {\r\n    margin-bottom: .5rem;\n}\r\n", ""]);
+exports.push([module.i, "\n.chat-message {\r\n    padding: 1 rem;\n}\n.chat-message > p {\r\n    margin-bottom: .5rem;\n}\r\n", ""]);
 
 // exports
 
@@ -47756,7 +47772,7 @@ var render = function() {
   return _c("div", { staticClass: "chat-message" }, [
     _c("p", [_vm._v(_vm._s(_vm.message.message))]),
     _vm._v(" "),
-    _c("small", [_vm._v(_vm._s(_vm.messsage.user))])
+    _c("small", [_vm._v(_vm._s(_vm.message.user))])
   ])
 }
 var staticRenderFns = []
@@ -47874,17 +47890,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            messages: [{
-                message: 'Hey!',
-                user: "John Doe"
-            }, {
-                message: 'Hello!',
-                user: "Jane Doe"
-            }]
-        };
-    }
+   props: ['messages']
 });
 
 /***/ }),
@@ -48018,7 +48024,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            messageText: ''
+        };
+    },
+
+    methods: {
+        sendMessage: function sendMessage() {
+            this.$emit('messagesent', {
+                message: this.messageText,
+                user: "John Doe"
+            });
+            this.messageText = '';
+        }
+    }
+});
 
 /***/ }),
 /* 57 */
@@ -48028,22 +48050,45 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "chat-composer" }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.messageText,
+          expression: "messageText"
+        }
+      ],
+      attrs: { type: "text", placeholder: "Start typing your message" },
+      domProps: { value: _vm.messageText },
+      on: {
+        keyup: function($event) {
+          if (
+            !("button" in $event) &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          return _vm.sendMessage($event)
+        },
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.messageText = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      { staticClass: "btn btn-primary", on: { click: _vm.sendMessage } },
+      [_vm._v("Send")]
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chat-composer" }, [
-      _c("input", {
-        attrs: { type: "text", placeholder: "Start typing your message" }
-      }),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Send")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

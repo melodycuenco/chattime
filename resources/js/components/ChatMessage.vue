@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="chat-message">
     <p>{{ message.message }}</p>
-    <small>{{ messsage.user }}</small>
+    <small>{{ message.user }}</small>
     </div>
 </template>
 
@@ -14,7 +14,7 @@ export default{
 
 <style lang="css">
 .chat-message {
-    padding: 1rem;
+    padding: 1 rem;
 }
 
 .chat-message > p {

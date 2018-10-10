@@ -6,21 +6,7 @@
 
 <script>
 export default {
-    data() {
-        return {
-             messages: [
-                {
-                    message: 'Hey!',
-                    user: "John Doe"
-        },
-        {
-                     message: 'Hello!',
-                     user: "Jane Doe"
-                 }
-            ]
-        }
-    }
-
+   props: ['messages']    
 }
 </script>
 
