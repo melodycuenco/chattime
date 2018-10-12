@@ -27,19 +27,21 @@ Route::get('/messages', function () {
 })->middleware('auth');
 
 
-Route::post('/messages',function(){
+Route::post('/messages', function () {
     //Store the new message
-    $user=Auth::user();
+    $user = Auth::user();
 
     $message= $user->messages()->create([
         'message' => request()->get('message')
     ]);
 
     // Announce that a new message has been posted
-    event( newMessagePosted($message, $user));
+    broadcast(new MessagePosted($message, $user))->toOthers();
 
     return ['status' => 'OK'];
 })->middleware('auth');
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
